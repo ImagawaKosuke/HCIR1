@@ -9,25 +9,25 @@ int MaxColor;
 
 int time;
 int type;
-int size;
-int dist;
+int size; //図形のサイズ
+int dist; //マウスカーソル位置の測定
 
-float Hue;
-float Saturation=500;
-float Value=1000;
+float Hue;//色相
+float Saturation=500; //彩度
+float Value=1000; //明度
 
 float X, Y;
 float Cx, Cy;
 float Angle;
 
-int a=0;
-int b=0;
-int c=3;
+int a=0; //描画用ボタンの変数
+int b=0; //配色用ボタンの変数
+int c=3;  //背景用ボタン
 float scale;
 int flag = 0;
 int A=280;
 
-Triangle t;
+Triangle t; //三角形の宣言
 
 void setup() {
   size(1250, 600);
@@ -38,11 +38,11 @@ void setup() {
   frameRate(15);            // フレームレートは15fps
   translate(0,0);
   cp5 = new ControlP5(this);
-  H = cp5.addSlider("Hue",0,1000,Hue,820,50,200,20);
+  H = cp5.addSlider("Hue",0,1000,Hue,820,50,200,20); //色相用のスライダー
   cp5 = new ControlP5(this);
-  S = cp5.addSlider("Saturation",0,600,Saturation,820,80,200,20);
+  S = cp5.addSlider("Saturation",0,600,Saturation,820,80,200,20); //彩度用のスライダー
   cp5 = new ControlP5(this);
-  V = cp5.addSlider("Value",0,1000,Value,820,110,200,20);
+  V = cp5.addSlider("Value",0,1000,Value,820,110,200,20); //明度用のスライダー
   String[] button = {"Default", "Transparent","Stroke"}; //描画パターンのボタン作成
   for(int i = 0;i<=2;i++)
   {
@@ -135,7 +135,7 @@ void fadeToWhite() {  // 描画後の時間経過に応じて薄くする
   rect(0, 0, 800, height);
 }
 
-void keyPressed() {
+void keyPressed() {//描画パターンを変更するためにtype変数を用いた
     if (key == 'e') {
         type=0;
     } else if(key == 'l'){
@@ -171,7 +171,7 @@ void keyPressed() {
     time = millis();
 }
 
-void circle() {
+void circle() { //渦巻き作成用の関数
   float speed = dist(mouseX, mouseY, pmouseX, pmouseY);
   Angle += 10;
   dist=5;
@@ -203,7 +203,7 @@ void BaseColor(){ c=1;}
 
 void Black(){c=2;}
 
-void control(){
+void control(){ //色を管理する関数
     if(a==1){fadeToWhite();}
     else if(a==2){stroke(0,0,0);strokeWeight(3);}
     else if(a==0){noStroke();}
@@ -212,30 +212,30 @@ void control(){
     else if(b==2){fill(mouseX*1.25 , mouseY*5/3, Value);}
 }
 
-void linecontrol(){
+void linecontrol(){//線の太さを管理する関数
     if(b==0){stroke(Hue, Saturation, Value);}
     else if(b==1){stroke((millis()/5)%1000, Saturation, Value);}
     else if(b==2){stroke(mouseX*1.25 , mouseY*5/3, Value);}
 }
 
-void backgroundcontrol(){
+void backgroundcontrol(){ //背景色を管理する関数
     if(c==0){background(MaxColor-1);}
     if(c==1){background(Hue, Saturation, Value);}
     if(c==2){background(0);}
 }
 
-void Sin(){
+void Sin(){ //正弦波を描画する関数
     float speed = dist(mouseX, mouseY, pmouseX, pmouseY);
     float x = (millis() - time)/8;
     if(sin(x * 0.01)<0){speed = -speed;}
-    float y = height / 2 - sin(x * 0.01)*A + speed/10;
+    float y = height / 2 - sin(x * 0.01)*A + speed/10; //スピードによってノイズが加わる
     ellipse(x%800, y, 15, 15);
 }
 
-void Cos(){
+void Cos(){ //余弦波を描画する関数
     float speed = dist(mouseX, mouseY, pmouseX, pmouseY);
     float x = (millis() - time)/8;
     if(cos(x * 0.01)<0){speed = -speed;}
-    float y = height / 2 - cos(x * 0.01)*A + speed/10;
+    float y = height / 2 - cos(x * 0.01)*A + speed/10; //スピードによってノイズが加わる
     ellipse(x%800, y, 15, 15);
 }
